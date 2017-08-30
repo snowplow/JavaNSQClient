@@ -1,17 +1,7 @@
 ## JavaNSQClient
 
-A (fast?) netty-based Java8 client for [NSQ](https://nsq.io)
+A netty-based Java8 client for [NSQ](https://nsq.io)
 heavily forked of TrendrrNSQClient.
-
-## Artifact
-
-```
-<dependency>
-  <groupId>com.github.brainlag</groupId>
-  <artifactId>nsq-client</artifactId>
-  <version>1.0.0.RC4</version>
-</dependency>
-```
 
 ## Consumer
 
