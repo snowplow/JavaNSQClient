@@ -12,7 +12,7 @@ import java.util.Optional;
 public class NSQConfig {
 
 
-    public enum Compression {NO_COMPRESSION, DEFLATE, SNAPPY}
+    public enum Compression {NO_COMPRESSION, DEFLATE}
 
     private String clientId;
     private String hostname;
@@ -164,9 +164,6 @@ public class NSQConfig {
         }
         if (isTlsV1()) {
             buffer.append("\"tls_v1\":" + isTlsV1() + ", ");
-        }
-        if (getCompression() == Compression.SNAPPY) {
-            buffer.append("\"snappy\": true, ");
         }
         if (getCompression() == Compression.DEFLATE) {
             buffer.append("\"deflate\": true, ");

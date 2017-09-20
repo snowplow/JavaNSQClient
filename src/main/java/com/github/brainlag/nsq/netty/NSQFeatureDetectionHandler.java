@@ -7,8 +7,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.compression.SnappyFramedDecoder;
-import io.netty.handler.codec.compression.SnappyFramedEncoder;
 import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.codec.compression.ZlibWrapper;
 import io.netty.handler.ssl.SslHandler;
@@ -20,7 +18,6 @@ public class NSQFeatureDetectionHandler extends SimpleChannelInboundHandler<NSQF
 
     private boolean ssl;
     private boolean compression;
-    private boolean snappy;
     private boolean deflate;
     private boolean finished;
 
@@ -39,9 +36,6 @@ public class NSQFeatureDetectionHandler extends SimpleChannelInboundHandler<NSQF
                     return;
                 }
                 //round 2
-                if (snappy) {
-                    reinstallDefaultDecoder = installSnappyDecoder(pipeline);
-                }
                 if (deflate) {
                     reinstallDefaultDecoder = installDeflateDecoder(pipeline, con);
                 }
@@ -58,17 +52,10 @@ public class NSQFeatureDetectionHandler extends SimpleChannelInboundHandler<NSQF
                 SslHandler sslHandler = new SslHandler(sslEngine, false);
                 sslHandler.setSingleDecode(true);
                 pipeline.addBefore("LengthFieldBasedFrameDecoder", "SSLHandler", sslHandler);
-                if (snappy) {
-                    pipeline.addBefore("NSQEncoder", "SnappyEncoder", new SnappyFramedEncoder());
-                }
                 if (deflate) {
                     pipeline.addBefore("NSQEncoder", "DeflateEncoder", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.NONE,
                             con.getConfig().getDeflateLevel()));
                 }
-            }
-            if (!ssl && snappy) {
-                pipeline.addBefore("NSQEncoder", "SnappyEncoder", new SnappyFramedEncoder());
-                reinstallDefaultDecoder = installSnappyDecoder(pipeline);
             }
             if (!ssl && deflate) {
                 pipeline.addBefore("NSQEncoder", "DeflateEncoder", ZlibCodecFactory.newZlibEncoder(ZlibWrapper.NONE,
@@ -99,23 +86,12 @@ public class NSQFeatureDetectionHandler extends SimpleChannelInboundHandler<NSQF
         return false;
     }
 
-    private boolean installSnappyDecoder(final ChannelPipeline pipeline) {
-        finished = true;
-        LogManager.getLogger(this).info("Adding snappy to pipline");
-        pipeline.replace("LengthFieldBasedFrameDecoder", "SnappyDecoder", new SnappyFramedDecoder());
-        return false;
-    }
-
     private void parseIdentify(final String message) {
         if (message.equals("OK")) {
             return;
         }
         if (message.contains("\"tls_v1\":true")) {
             ssl = true;
-        }
-        if (message.contains("\"snappy\":true")) {
-            snappy = true;
-            compression = true;
         }
         if (message.contains("\"deflate\":true")) {
             deflate = true;

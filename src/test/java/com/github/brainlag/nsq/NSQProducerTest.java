@@ -30,12 +30,6 @@ import static org.junit.Assert.assertTrue;
 public class NSQProducerTest {
     private ObjectMapper mapper = new ObjectMapper();
 
-    private NSQConfig getSnappyConfig() {
-        final NSQConfig config = new NSQConfig();
-        config.setCompression(NSQConfig.Compression.SNAPPY);
-        return config;
-    }
-
     private NSQConfig getDeflateConfig() {
         final NSQConfig config = new NSQConfig();
         config.setCompression(NSQConfig.Compression.DEFLATE);
@@ -54,44 +48,11 @@ public class NSQProducerTest {
         return config;
     }
 
-    private NSQConfig getSslAndSnappyConfig() throws SSLException {
-        final NSQConfig config = getSslConfig();
-        config.setCompression(NSQConfig.Compression.SNAPPY);
-        return config;
-    }
-
     private NSQConfig getSslAndDeflateConfig() throws SSLException {
         final NSQConfig config = getSslConfig();
         config.setCompression(NSQConfig.Compression.DEFLATE);
         config.setDeflateLevel(4);
         return config;
-    }
-
-    @Test
-    public void testProduceOneMsgSnappy() throws NSQException, TimeoutException, InterruptedException {
-        AtomicInteger counter = new AtomicInteger(0);
-        NSQLookup lookup = new DefaultNSQLookup(mapper);
-        lookup.addLookupAddress(Nsq.getNsqLookupdHost(), 4161);
-
-        NSQProducer producer = new NSQProducer();
-        producer.setConfig(getSnappyConfig());
-        producer.addAddress(Nsq.getNsqdHost(), 4150);
-        producer.start();
-        String msg = randomString();
-        producer.produce("test3", msg.getBytes());
-        producer.shutdown();
-
-        NSQConsumer consumer = new NSQConsumer(lookup, "test3", "testconsumer", (message) -> {
-            LogManager.getLogger(this).info("Processing message: " + new String(message.getMessage()));
-            counter.incrementAndGet();
-            message.finished();
-        }, getSnappyConfig());
-        consumer.start();
-        while (counter.get() == 0) {
-            Thread.sleep(500);
-        }
-        assertEquals(1, counter.get());
-        consumer.shutdown();
     }
 
     @Test
@@ -141,33 +102,6 @@ public class NSQProducerTest {
             counter.incrementAndGet();
             message.finished();
         }, getSslConfig());
-        consumer.start();
-        while (counter.get() == 0) {
-            Thread.sleep(500);
-        }
-        assertEquals(1, counter.get());
-        consumer.shutdown();
-    }
-
-    @Test
-    public void testProduceOneMsgSslAndSnappy() throws InterruptedException, NSQException, TimeoutException, SSLException {
-        AtomicInteger counter = new AtomicInteger(0);
-        NSQLookup lookup = new DefaultNSQLookup(mapper);
-        lookup.addLookupAddress(Nsq.getNsqLookupdHost(), 4161);
-
-        NSQProducer producer = new NSQProducer();
-        producer.setConfig(getSslAndSnappyConfig());
-        producer.addAddress(Nsq.getNsqdHost(), 4150);
-        producer.start();
-        String msg = randomString();
-        producer.produce("test3", msg.getBytes());
-        producer.shutdown();
-
-        NSQConsumer consumer = new NSQConsumer(lookup, "test3", "testconsumer", (message) -> {
-            LogManager.getLogger(this).info("Processing message: " + new String(message.getMessage()));
-            counter.incrementAndGet();
-            message.finished();
-        }, getSslAndSnappyConfig());
         consumer.start();
         while (counter.get() == 0) {
             Thread.sleep(500);
