@@ -10,13 +10,28 @@ object BuildSettings {
 
   // Build settings for our app
   lazy val buildSettings = Seq(
-    organization          :=  "com.snowplowanalytics",
-    scalaVersion          :=  "2.11.11",
-    javacOptions          :=  javaCompilerOptions,
+    organization          :=  "com.snowplowanalytics"
   )
 
-  lazy val javaCompilerOptions = Seq(
-    "-source", "1.8",
-    "-target", "1.8"
+  lazy val publishSettings = bintraySettings ++ Seq(
+    publishMavenStyle := true,
+    publishArtifact := true,
+    publishArtifact in Test := false,
+    licenses += ("MIT", url("https://opensource.org/licenses/MIT")),
+    bintrayOrganization := Some("snowplow"),
+    bintrayRepository := "snowplow-maven",
+    pomIncludeRepository := { _ => false },
+    homepage := Some(url("http://snowplowanalytics.com")),
+    scmInfo := Some(ScmInfo(url("https://github.com/snowplow/JavaNSQClient"),
+      "scm:git@github.com:snowplow/JavaNSQClient.git")),
+    pomExtra := (
+      <developers>
+        <developer>
+          <name>Snowplow Analytics Ltd</name>
+          <email>support@snowplowanalytics.com</email>
+          <organization>Snowplow Analytics Ltd</organization>
+          <organizationUrl>http://snowplowanalytics.com</organizationUrl>
+        </developer>
+      </developers>)
   )
 }

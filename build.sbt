@@ -5,6 +5,7 @@ lazy val root = project.in(file("."))
     description := "Fast Java client for NSQ"
   )
   .settings(BuildSettings.buildSettings)
+  .settings(BuildSettings.publishSettings)
   .settings(
     libraryDependencies ++= Seq(
       Dependencies.Libraries.log4jApi,
