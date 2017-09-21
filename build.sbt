@@ -1,7 +1,7 @@
 lazy val root = project.in(file("."))
   .settings(
     name        := "nsq-java-client",
-    version     := "1.1.0",
+    version     := "1.1.0-rc2",
     description := "Fast Java client for NSQ"
   )
   .settings(BuildSettings.buildSettings)
