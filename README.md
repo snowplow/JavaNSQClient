@@ -1,7 +1,26 @@
 ## JavaNSQClient
 
-A netty-based Java8 client for [NSQ](https://nsq.io)
-heavily forked of [brainlag/JavaNSQClient](https://github.com/brainlag/JavaNSQClient).
+A netty-based Java8 client for [NSQ](https://nsq.io) heavily forked of
+[brainlag/JavaNSQClient](https://github.com/brainlag/JavaNSQClient).
+
+## Artifact
+
+### Maven
+
+```xml
+<dependency>
+  <groupId>com.snowplowanalytics</groupId>
+  <artifactId>nsq-java-client_2.10</artifactId>
+  <version>1.2.0</version>
+</dependency>
+```
+
+
+### SBT
+
+```scala
+"com.snowplowanalytics" % "nsq-java-client_2.10" % "1.2.0"
+```
 
 ## Consumer
 
