@@ -6,7 +6,7 @@ object Dependencies {
     val log4jCore       = "2.6.2"
     val netty           = "4.1.15.Final"
     val guava           = "19.0"
-    val jacksonDatabind = "2.8.8"
+    val jacksonDatabind = "2.6.7"
     val commonsPool     = "2.4.2"
     // (test only)
     val junitInterface  = "0.8"

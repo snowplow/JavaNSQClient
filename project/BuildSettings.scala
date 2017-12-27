@@ -10,7 +10,8 @@ object BuildSettings {
 
   // Build settings for our app
   lazy val buildSettings = Seq(
-    organization          :=  "com.snowplowanalytics"
+    organization := "com.snowplowanalytics",
+    crossPaths := false
   )
 
   lazy val publishSettings = bintraySettings ++ Seq(

@@ -1,0 +1,4 @@
+Version 1.2.0 (2017-12-XX)
+--------------------------
+Downgrade jackson to 2.6.7 to align with the AWS SDK (#10)
+Disable crossPaths in SBT (#13)
