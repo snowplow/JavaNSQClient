@@ -1,4 +1,3 @@
- // SBT
 import sbt._
 import Keys._
 
@@ -8,7 +7,6 @@ import bintray.BintrayKeys._
 
 object BuildSettings {
 
-  // Build settings for our app
   lazy val buildSettings = Seq(
     organization := "com.snowplowanalytics",
     crossPaths := false
@@ -23,10 +21,13 @@ object BuildSettings {
     bintrayRepository := "snowplow-maven",
     pomIncludeRepository := { _ => false },
     homepage := Some(url("http://snowplowanalytics.com")),
-    scmInfo := Some(ScmInfo(url("https://github.com/snowplow/JavaNSQClient"),
-      "scm:git@github.com:snowplow/JavaNSQClient.git")),
-    pomExtra := (
-      <developers>
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/snowplow/JavaNSQClient"),
+        "scm:git@github.com:snowplow/JavaNSQClient.git"
+      )
+    ),
+    pomExtra := (<developers>
         <developer>
           <name>Snowplow Analytics Ltd</name>
           <email>support@snowplowanalytics.com</email>
