@@ -23,7 +23,7 @@ public class NSQProducer {
     private int roundRobinCount = 0;
     private volatile boolean started = false;
     private ExecutorService executor = Executors.newCachedThreadPool();
-    private GenericKeyedObjectPoolConfig poolConfig = null;
+    private GenericKeyedObjectPoolConfig<Connection> poolConfig = null;
     private GenericKeyedObjectPool<ServerAddress, Connection> pool;
     private NSQConfig config = new NSQConfig();
     private int connectionRetries = 5;
@@ -38,7 +38,7 @@ public class NSQProducer {
 
     private void createPool() {
         if (poolConfig == null) {
-            poolConfig = new GenericKeyedObjectPoolConfig();
+            poolConfig = new GenericKeyedObjectPoolConfig<>();
             poolConfig.setTestOnBorrow(true);
             poolConfig.setJmxEnabled(false);
         }
@@ -135,7 +135,7 @@ public class NSQProducer {
         return this;
     }
 
-    public NSQProducer setPoolConfig(GenericKeyedObjectPoolConfig poolConfig) {
+    public NSQProducer setPoolConfig(GenericKeyedObjectPoolConfig<Connection> poolConfig) {
         if (!started) {
             this.poolConfig = poolConfig;
         }
