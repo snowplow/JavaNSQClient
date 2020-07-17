@@ -1,8 +1,10 @@
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .settings(
-    name        := "nsq-java-client",
-    version     := "1.2.0",
-    description := "Fast Java client for NSQ"
+    name := "nsq-java-client",
+    version := "1.3.0",
+    description := "Fast Java client for NSQ",
+    autoScalaLibrary := false
   )
   .settings(BuildSettings.buildSettings)
   .settings(BuildSettings.publishSettings)
