@@ -191,7 +191,7 @@ public class NSQProducerTest {
                     try {
                         producer.produce("test3", msg.getBytes());
                     } catch (NSQException | TimeoutException e) {
-                        Throwables.propagate(e);
+                        Throwables.throwIfUnchecked(e);
                     }
                 }
             }).start();
