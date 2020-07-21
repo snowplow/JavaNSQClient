@@ -1,8 +1,9 @@
+dist: trusty
 language: scala
 scala:
-- 2.11.11
+- 2.12.10
 jdk:
-- oraclejdk8
+- openjdk8
 before_script:
 - sudo apt-get install openssl
 - sudo apt-get install libapr1 libapr1-dev
